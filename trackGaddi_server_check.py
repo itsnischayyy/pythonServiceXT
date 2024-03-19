@@ -74,12 +74,12 @@ def get_website_status():
     except requests.Timeout:
        send_error("Connection Timeout. TrackGaddi", str(1707168992511656154))
     except Exception as e:
-       write_log(str(e)) 
+       # write_log(str(e)) 
        send_error("Trackgaddi Server is down.", str(1707168992454683726))    
 
 
 def send_error(error_msg, templateId):
-    write_log(error_msg)
+    # write_log(error_msg)
     send_email(error_msg)
     send_sms(error_msg,templateId)
 
@@ -108,13 +108,13 @@ def send_sms(msg, templateId):
       print(response.text)
    except Exception as e:
        print("sms error")
-       write_log(str(e)) 
+       # write_log(str(e)) 
 
-def write_log(log_msg):
-    # file = open(log_file, "a")
-    date = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
-    file.write(date + ' : '+ log_msg +'\n')
-    file.close()
+# def write_log(log_msg):
+#     file = open(log_file, "a")
+#     date = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
+#     file.write(date + ' : '+ log_msg +'\n')
+#     file.close()
 
 
 if __name__ == '__main__':
