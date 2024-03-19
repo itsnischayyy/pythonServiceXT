@@ -11,7 +11,7 @@ admin_email = ['nayan.xt@outlook.com']
 email_user = "trackgaddireports@gmail.com"
 email_password = "iwusbsweblwvjgrm"
 #log_file = "C:/WT_Services/trackgaddi_server_check_log.txt"
-log_file = "C:/Log/trackgaddi_server_check_log.txt"
+# log_file = "C:/Log/trackgaddi_server_check_log.txt"
 
 
  
@@ -111,7 +111,7 @@ def send_sms(msg, templateId):
        write_log(str(e)) 
 
 def write_log(log_msg):
-    file = open(log_file, "a")
+    # file = open(log_file, "a")
     date = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
     file.write(date + ' : '+ log_msg +'\n')
     file.close()
