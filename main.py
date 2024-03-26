@@ -24,8 +24,6 @@ async def periodic_task():
 async def run_periodic_task():
     asyncio.create_task(periodic_task())  # Run the periodic task
 
-asyncio.create_task(run_periodic_task())
-
 @app.get("/")
 @app.head("/")
 async def read_root():
