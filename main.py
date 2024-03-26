@@ -20,7 +20,7 @@ async def periodic_task():
     while True:
         print("Entered periodic_task")
         await get_website_status()
-        await asyncio.sleep(300)  # Sleep for 300 seconds (5 minutes)
+        asyncio.sleep(300)  # Sleep for 300 seconds (5 minutes)
 
 async def run_periodic_task():
     while True:
