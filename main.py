@@ -12,17 +12,17 @@ app = FastAPI()
 
 subject = 'TrackGaddi'
 admin_email = ['wellwininfotech@yahoo.in', 'ankesh.maradia@gmail.com', 'ankitjain1790@gmail.com',
-               'nayan.xt@outlook.com', 'vivek.xtremethoughts@outlook.com']
+               'nayan.xt@outlook.com', 'vivek.xtremethoughts@outlook.com', 'nischay.xt@outlook.com']
 email_user = "trackgaddireports@gmail.com"
 email_password = "iwusbsweblwvjgrm"
 
 async def periodic_task():
     while True:
         print("Entered periodic_task")
+        await get_website_status()
         print("Entering sleep")
         await asyncio.sleep(300)  # Sleep for 300 seconds (5 minutes)
         print("Out of sleep")
-        await get_website_status()
 
 async def run_periodic_task():
     while True:
@@ -37,7 +37,7 @@ async def read_root():
     return {"message": "Hello, world!"}
 
 async def get_website_status():
-    print("Entered get_website_status")
+    # print("Entered get_website_status")
     try:
         response = requests.get('http://52.76.115.44/api/v1/Monitoring/PortVehicleCount', timeout=180)
         api_response = response.json()
@@ -96,10 +96,10 @@ async def get_website_status():
         send_error("Connection Timeout. TrackGaddi", str(1707168992511656154))
     except Exception as e:
         send_error("Trackgaddi Server is down.", str(1707168992454683726))
-    finally:
+    # finally:
         # Keep the periodic task running even if an exception occurs
         # asyncio.create_task(run_periodic_task())
-        pass
+        # pass
 
 def send_error(error_msg, templateId):
     send_email(error_msg)
@@ -126,5 +126,4 @@ def send_sms(msg, templateId):
 
 if __name__ == "__main__":
     import uvicorn
-    
     uvicorn.run(app, host="0.0.0.0", port=8000)
