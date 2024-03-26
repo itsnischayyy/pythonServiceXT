@@ -6,17 +6,39 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 from email import encoders
 from datetime import datetime
-from flask import Flask
-import schedule
+from fastapi import FastAPI
 
-app = Flask(__name__)
+app = FastAPI()
 
 subject = 'TrackGaddi'
+# admin_email = ['wellwininfotech@yahoo.in', 'ankesh.maradia@gmail.com', 'ankitjain1790@gmail.com',
+#                'nayan.xt@outlook.com', 'vivek.xtremethoughts@outlook.com', 'nischay.xt@outlook.com']
 admin_email = ['nayan.xt@outlook.com', 'vivek.xtremethoughts@outlook.com', 'nischay.xt@outlook.com']
 email_user = "trackgaddireports@gmail.com"
 email_password = "iwusbsweblwvjgrm"
 
+async def periodic_task():
+    while True:
+        print("Entered periodic_task")
+        await get_website_status()
+        print("Entering sleep")
+        await asyncio.sleep(300)  # Sleep for 300 seconds (5 minutes)
+        print("Out of sleep")
+
+async def run_periodic_task():
+    while True:
+        print("Entered run_periodic_task")
+        await periodic_task()
+
+asyncio.create_task(run_periodic_task())
+
+@app.get("/")
+@app.head("/")
+async def read_root():
+    return {"message": "Hello, world!"}
+
 async def get_website_status():
+    # print("Entered get_website_status")
     try:
         response = requests.get('http://52.76.115.44/api/v1/Monitoring/PortVehicleCount', timeout=180)
         api_response = response.json()
@@ -75,12 +97,10 @@ async def get_website_status():
         send_error("Connection Timeout. TrackGaddi", str(1707168992511656154))
     except Exception as e:
         send_error("Trackgaddi Server is down.", str(1707168992454683726))
-
-def job():
-    print("Running get_website_status()")
-    asyncio.run(get_website_status())
-
-schedule.every(5).minutes.do(job)
+    # finally:
+        # Keep the periodic task running even if an exception occurs
+        # asyncio.create_task(run_periodic_task())
+        # pass
 
 def send_error(error_msg, templateId):
     send_email(error_msg)
@@ -105,9 +125,6 @@ def send_sms(msg, templateId):
     except Exception as e:
         print("sms error")
 
-@app.route('/')
-def index():
-    return "TrackGaddi Flask App is running!"
-
 if __name__ == "__main__":
-    app.run(debug=True)
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)
