@@ -22,8 +22,7 @@ async def periodic_task():
         await asyncio.sleep(180)  # Sleep for 180 seconds (3 minutes)
 
 async def run_periodic_task():
-    while True:
-        await periodic_task()
+    asyncio.create_task(periodic_task())  # Run the periodic task
 
 asyncio.create_task(run_periodic_task())
 
