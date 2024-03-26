@@ -40,7 +40,8 @@ async def read_root():
 async def get_website_status():
     # print("Entered get_website_status")
     try:
-        response0 = requests.get('https://pythonservicext.onrender.com', timeout=180)
+        # response0 = requests.get('https://pythonservicext.onrender.com', timeout=180)
+        
         response = requests.get('http://52.76.115.44/api/v1/Monitoring/PortVehicleCount', timeout=180)
         api_response = response.json()
         response1 = requests.get('http://www.trackgaddi.com/api/v1/ApiHealthCheck/GetApiHealthCheck', timeout=30)
@@ -50,10 +51,10 @@ async def get_website_status():
 
         if response.status_code != 200:
             send_error("Trackgaddi Server is down.", str(1707168992454683726))
-            response0 = requests.get('https://pythonservicext.onrender.com', timeout=180)
+            # response0 = requests.get('https://pythonservicext.onrender.com', timeout=180)
 
         if response.status_code == 200:
-            response0 = requests.get('https://pythonservicext.onrender.com', timeout=180)
+            # response0 = requests.get('https://pythonservicext.onrender.com', timeout=180)
             down_apis = []
             size = 0
             for api_data in api_response:
@@ -90,10 +91,12 @@ async def get_website_status():
                     send_error("Trackgaddi Server is down.", str(1707168992454683726))
 
             if size > 1:
-                response0 = requests.get('https://pythonservicext.onrender.com', timeout=180)
+                # response0 = requests.get('https://pythonservicext.onrender.com', timeout=180)
+                
                 send_email("TrackGaddi Port is down. " + str(down_apis))
             else:
-                response0 = requests.get('https://pythonservicext.onrender.com', timeout=180)
+                # response0 = requests.get('https://pythonservicext.onrender.com', timeout=180)
+                
                 print("No issues found. Function executed successfully.")  # Add a message to indicate successful execution
                 
     except requests.ConnectionError:
@@ -103,7 +106,8 @@ async def get_website_status():
     except Exception as e:
         send_error("Trackgaddi Server is down.", str(1707168992454683726))
     finally:
-        response0 = requests.get('https://pythonservicext.onrender.com', timeout=180)
+        # response0 = requests.get('https://pythonservicext.onrender.com', timeout=180)
+        
         # Keep the periodic task running even if an exception occurs
         # asyncio.create_task(run_periodic_task())
         # pass
