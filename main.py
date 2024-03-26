@@ -1,20 +1,39 @@
 import smtplib
-import requests 
+import requests
+import asyncio
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 from email import encoders
 from datetime import datetime
-  
+from fastapi import FastAPI
+
+app = FastAPI()
 subject = 'TrackGaddi'
-admin_email = ['nayan.xt@outlook.com']
+admin_email = ['wellwininfotech@yahoo.in','ankesh.maradia@gmail.com', 'ankitjain1790@gmail.com','nayan.xt@outlook.com','vivek.xtremethoughts@outlook.com']
 email_user = "trackgaddireports@gmail.com"
 email_password = "iwusbsweblwvjgrm"
 #log_file = "C:/WT_Services/trackgaddi_server_check_log.txt"
 # log_file = "C:/Log/trackgaddi_server_check_log.txt"
 
+app = FastAPI()
 
- 
+async def periodic_task():
+    while True:
+        get_website_status()
+        await asyncio.sleep(180)  # Sleep for 180 seconds (3 minutes)
+
+async def run_periodic_task():
+    while True:
+        await periodic_task()
+
+asyncio.create_task(run_periodic_task())
+
+@app.get("/")
+@app.head("/") 
+async def read_root():
+    return {"message": "Hello, world!"}
+    
 def get_website_status():
     try:
            response = requests.get('http://52.76.115.44/api/v1/Monitoring/PortVehicleCount',timeout=180)
@@ -24,7 +43,7 @@ def get_website_status():
            response2 = requests.get('http://gaddi24.com/api/v1/ApiHealthCheck/GetApiHealthCheck',timeout=30)
            api_response2 = response2.json()
            
-           if response.status_code == 200:
+           if response.status_code != 200:
               send_error("Trackgaddi Server is down.", str(1707168992454683726))
            
            if response.status_code == 200:
@@ -74,12 +93,12 @@ def get_website_status():
     except requests.Timeout:
        send_error("Connection Timeout. TrackGaddi", str(1707168992511656154))
     except Exception as e:
-       # write_log(str(e)) 
+      #  write_log(str(e)) 
        send_error("Trackgaddi Server is down.", str(1707168992454683726))    
 
 
 def send_error(error_msg, templateId):
-    # write_log(error_msg)
+   #  write_log(error_msg)
     send_email(error_msg)
     send_sms(error_msg,templateId)
 
@@ -104,11 +123,11 @@ def send_email(email_body):
 def send_sms(msg, templateId):
    #response = requests.get("http://sms.onlinebusinessbazaar.in/api/mt/SendSMS?user=wellwin&password=sms123&senderid=VTRACK&channel=trans&DCS=0&flashsms=0&number=7878548818&text="+ msg +"",timeout=30)
    try:
-      response = requests.get("http://mysms.onlinebusinessbazaar.in/api/mt/SendSMS?user=wellwin&password=sms123&senderid=VTRAKK&channel=Trans&DCS=0&flashsms=0&number=7878548818&text="+ msg +"&route=06&DLTTemplateId="+templateId+"&PEID=1201159282315113937",timeout=60) 
+      response = requests.get("http://mysms.onlinebusinessbazaar.in/api/mt/SendSMS?user=wellwin&password=sms123&senderid=VTRAKK&channel=Trans&DCS=0&flashsms=0&number=8401207238,9137323046,9326852540,7878548818,8160757199&text="+ msg +"&route=06&DLTTemplateId="+templateId+"&PEID=1201159282315113937",timeout=60) 
       print(response.text)
    except Exception as e:
        print("sms error")
-       # write_log(str(e)) 
+      #  write_log(str(e)) 
 
 # def write_log(log_msg):
 #     file = open(log_file, "a")
@@ -117,6 +136,7 @@ def send_sms(msg, templateId):
 #     file.close()
 
 
-if __name__ == '__main__':
-    get_website_status()
-
+if __name__ == "__main__":
+    asyncio.create_task(run_periodic_task())  # Start the periodic task
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)  # Run the FastAPI application
