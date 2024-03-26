@@ -19,7 +19,7 @@ email_password = "iwusbsweblwvjgrm"
 async def periodic_task():
     while True:
         await get_website_status()
-        await asyncio.sleep(180)  # Sleep for 180 seconds (3 minutes)
+        await asyncio.sleep(300)  # Sleep for 300 seconds (5 minutes)
 
 async def run_periodic_task():
     while True:
@@ -82,6 +82,8 @@ async def get_website_status():
 
             if size > 1:
                 send_email("TrackGaddi Port is down. " + str(down_apis))
+            else:
+                print("No issues found. Function executed successfully.")  # Add a message to indicate successful execution
                 
     except requests.ConnectionError:
         send_error("Connection Error. TrackGaddi", str(1707168992519849614))
@@ -114,6 +116,5 @@ def send_sms(msg, templateId):
         print("sms error")
 
 if __name__ == "__main__":
-    asyncio.create_task(run_periodic_task())
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
