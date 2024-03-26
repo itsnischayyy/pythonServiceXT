@@ -4,3 +4,4 @@ fastapi
 asyncio
 requests
 schedule
+flask
