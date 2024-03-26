@@ -2,6 +2,3 @@ requests
 uvicorn
 fastapi
 asyncio
-requests
-schedule
-flask
