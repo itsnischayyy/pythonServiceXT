@@ -20,14 +20,12 @@ async def periodic_task():
     while True:
         print("Entered periodic_task")
         await get_website_status()
-        asyncio.sleep(300)  # Sleep for 300 seconds (5 minutes)
+        await asyncio.sleep(300)  # Sleep for 300 seconds (5 minutes)
 
 async def run_periodic_task():
     while True:
         print("Entered run_periodic_task")
         await periodic_task()
-
-asyncio.create_task(run_periodic_task())
 
 @app.get("/")
 @app.head("/")
@@ -96,7 +94,8 @@ async def get_website_status():
         send_error("Trackgaddi Server is down.", str(1707168992454683726))
     finally:
         # Keep the periodic task running even if an exception occurs
-        asyncio.create_task(run_periodic_task())
+        # asyncio.create_task(run_periodic_task())
+        pass
 
 def send_error(error_msg, templateId):
     send_email(error_msg)
@@ -123,4 +122,5 @@ def send_sms(msg, templateId):
 
 if __name__ == "__main__":
     import uvicorn
+    asyncio.create_task(run_periodic_task())
     uvicorn.run(app, host="0.0.0.0", port=8000)
