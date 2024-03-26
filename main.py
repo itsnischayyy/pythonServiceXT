@@ -106,11 +106,14 @@ async def get_website_status():
     except Exception as e:
         send_error("Trackgaddi Server is down.", str(1707168992454683726))
     finally:
-        response0 = requests.get('https://pythonservicext.onrender.com', timeout=180)
-        pass
-        # Keep the periodic task running even if an exception occurs
-        # asyncio.create_task(run_periodic_task())
-        # pass
+        try:
+            response0 = requests.get('https://pythonservicext.onrender.com', timeout=180)
+        except Exception as e:
+            # If an exception occurs while making the request in the finally block,
+            # you may want to log the error or take appropriate action.
+            # For example, you can print the error message:
+            print("An error occurred in the finally block:", str(e))
+
 
 def send_error(error_msg, templateId):
     send_email(error_msg)
