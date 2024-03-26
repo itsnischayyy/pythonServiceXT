@@ -91,6 +91,9 @@ async def get_website_status():
         send_error("Connection Timeout. TrackGaddi", str(1707168992511656154))
     except Exception as e:
         send_error("Trackgaddi Server is down.", str(1707168992454683726))
+    finally:
+        # Keep the periodic task running even if an exception occurs
+        asyncio.create_task(run_periodic_task())
 
 def send_error(error_msg, templateId):
     send_email(error_msg)
