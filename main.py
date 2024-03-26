@@ -7,8 +7,11 @@ from email.mime.base import MIMEBase
 from email import encoders
 from datetime import datetime
 from fastapi import FastAPI
+import requests
+import schedule
+import time
 
-app = FastAPI()
+# app = FastAPI()
 
 subject = 'TrackGaddi'
 # admin_email = ['wellwininfotech@yahoo.in', 'ankesh.maradia@gmail.com', 'ankitjain1790@gmail.com',
@@ -17,25 +20,25 @@ admin_email = ['nayan.xt@outlook.com', 'vivek.xtremethoughts@outlook.com', 'nisc
 email_user = "trackgaddireports@gmail.com"
 email_password = "iwusbsweblwvjgrm"
 
-async def periodic_task():
-    while True:
-        print("Entered periodic_task")
-        await get_website_status()
-        print("Entering sleep")
-        await asyncio.sleep(300)  # Sleep for 300 seconds (5 minutes)
-        print("Out of sleep")
+# async def periodic_task():
+#     while True:
+#         print("Entered periodic_task")
+#         await get_website_status()
+#         print("Entering sleep")
+#         await asyncio.sleep(300)  # Sleep for 300 seconds (5 minutes)
+#         print("Out of sleep")
 
-async def run_periodic_task():
-    while True:
-        print("Entered run_periodic_task")
-        await periodic_task()
+# async def run_periodic_task():
+#     while True:
+#         print("Entered run_periodic_task")
+#         await periodic_task()
 
-asyncio.create_task(run_periodic_task())
+# asyncio.create_task(run_periodic_task())
 
-@app.get("/")
-@app.head("/")
-async def read_root():
-    return {"message": "Hello, world!"}
+# @app.get("/")
+# @app.head("/")
+# async def read_root():
+#     return {"message": "Hello, world!"}
 
 async def get_website_status():
     # print("Entered get_website_status")
@@ -102,6 +105,13 @@ async def get_website_status():
         # asyncio.create_task(run_periodic_task())
         # pass
 
+def job():
+    print("Running get_website_status()")
+    get_website_status()
+    
+schedule.every(5).minutes.do(job)
+
+
 def send_error(error_msg, templateId):
     send_email(error_msg)
     send_sms(error_msg, templateId)
@@ -125,6 +135,10 @@ def send_sms(msg, templateId):
     except Exception as e:
         print("sms error")
 
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+# if __name__ == "__main__":
+#     import uvicorn
+#     uvicorn.run(app, host="0.0.0.0", port=8000)
+    
+while True:
+    schedule.run_pending()
+    time.sleep(1)
