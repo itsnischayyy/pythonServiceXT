@@ -9,7 +9,6 @@ from datetime import datetime
 from fastapi import FastAPI
 import requests
 import schedule
-import time
 
 # app = FastAPI()
 
@@ -141,4 +140,4 @@ def send_sms(msg, templateId):
     
 while True:
     schedule.run_pending()
-    time.sleep(1)
+    await asyncio.sleep(1)
