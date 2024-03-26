@@ -17,6 +17,11 @@ admin_email = ['nayan.xt@outlook.com', 'vivek.xtremethoughts@outlook.com', 'nisc
 email_user = "trackgaddireports@gmail.com"
 email_password = "iwusbsweblwvjgrm"
 
+# Disable the automatic shutdown event
+@app.on_event("shutdown")
+async def shutdown_event():
+    pass
+
 async def periodic_task():
     while True:
         print("Entered periodic_task")
