@@ -19,13 +19,17 @@ email_password = "iwusbsweblwvjgrm"
 async def periodic_task():
     while True:
         print("Entered periodic_task")
-        await get_website_status()
+        print("Entering sleep")
         await asyncio.sleep(300)  # Sleep for 300 seconds (5 minutes)
+        print("Out of sleep")
+        await get_website_status()
 
 async def run_periodic_task():
     while True:
         print("Entered run_periodic_task")
         await periodic_task()
+
+asyncio.create_task(run_periodic_task())
 
 @app.get("/")
 @app.head("/")
@@ -122,5 +126,5 @@ def send_sms(msg, templateId):
 
 if __name__ == "__main__":
     import uvicorn
-    asyncio.create_task(run_periodic_task())
+    
     uvicorn.run(app, host="0.0.0.0", port=8000)
