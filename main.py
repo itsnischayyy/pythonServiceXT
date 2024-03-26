@@ -11,8 +11,9 @@ from fastapi import FastAPI
 app = FastAPI()
 
 subject = 'TrackGaddi'
-admin_email = ['wellwininfotech@yahoo.in', 'ankesh.maradia@gmail.com', 'ankitjain1790@gmail.com',
-               'nayan.xt@outlook.com', 'vivek.xtremethoughts@outlook.com', 'nischay.xt@outlook.com']
+# admin_email = ['wellwininfotech@yahoo.in', 'ankesh.maradia@gmail.com', 'ankitjain1790@gmail.com',
+#                'nayan.xt@outlook.com', 'vivek.xtremethoughts@outlook.com', 'nischay.xt@outlook.com']
+admin_email = ['nayan.xt@outlook.com', 'vivek.xtremethoughts@outlook.com', 'nischay.xt@outlook.com']
 email_user = "trackgaddireports@gmail.com"
 email_password = "iwusbsweblwvjgrm"
 
