@@ -18,11 +18,13 @@ email_password = "iwusbsweblwvjgrm"
 
 async def periodic_task():
     while True:
+        print("Entered periodic_task")
         await get_website_status()
         await asyncio.sleep(300)  # Sleep for 300 seconds (5 minutes)
 
 async def run_periodic_task():
     while True:
+        print("Entered run_periodic_task")
         await periodic_task()
 
 asyncio.create_task(run_periodic_task())
@@ -33,6 +35,7 @@ async def read_root():
     return {"message": "Hello, world!"}
 
 async def get_website_status():
+    print("Entered get_website_status")
     try:
         response = requests.get('http://52.76.115.44/api/v1/Monitoring/PortVehicleCount', timeout=180)
         api_response = response.json()
