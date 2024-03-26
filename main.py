@@ -138,6 +138,9 @@ def send_sms(msg, templateId):
 #     import uvicorn
 #     uvicorn.run(app, host="0.0.0.0", port=8000)
     
-while True:
-    schedule.run_pending()
-    await asyncio.sleep(1)
+async def main():
+    while True:
+        schedule.run_pending()
+        await asyncio.sleep(1)
+
+asyncio.run(main())
